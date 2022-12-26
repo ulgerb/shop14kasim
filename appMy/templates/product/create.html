@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="col-8 mt-5 p-5" style="background-color: rgb(182, 182, 182);">
+        <h2>Ürün Ekle</h2><hr>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <select class="form-select mb-3" name="category" aria-label="Default select example">
+                <option selected>Kategori Seç</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Ürün Adı</label>
+                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Ürün Adı">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Ürün Açıklaması</label>
+                <textarea class="form-control" name="text" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="validationDefault05" class="form-label">Ürün Fiyatı</label>
+                <input type="number" name="priece" class="form-control" id="validationDefault05" required>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Ürün Fotoğrafı</label>
+                <input class="form-control" name="image" type="file" id="formFile">
+            </div>
+            <button type="submit" class="btn btn-success">Ekle</button>
+        </form>
+    </div>
+</div>
+    
+{% endblock body %}
+    

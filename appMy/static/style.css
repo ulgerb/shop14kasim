@@ -1,0 +1,72 @@
+*{
+    box-sizing: border-box;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+}
+/* Header start */
+header>.navbar{
+    background: rgb(236, 187, 103);
+}
+.nav-item:hover{
+    box-shadow: -2px -2px 0px black inset ;
+    transition: all .3s ;
+}
+
+
+/* Header end */
+
+
+
+.detail-img{
+    display: flex;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.08) -6px 4px 12px;
+
+}
+.detail-info{
+    padding: 25px;
+    box-shadow: rgba(0, 0, 0, 0.08) 6px 4px 12px;
+    /* border-radius: 20px; */
+}
+
+/* Comment */
+.comment{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background: rgb(209, 210, 223);
+}
+form input::placeholder{
+    color: red !important;
+    background: rgb(199, 199, 199);
+}
+.user{
+    width: 40px;
+    height: 40px;
+    
+}
+.user>*{
+    width: 100% !important;
+    border-radius: 50%;
+    border: 2px solid black !important;
+}
+
+/* login */
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    .h-custom {
+        height: 100%;
+    }
+}

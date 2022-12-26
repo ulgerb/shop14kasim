@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top: 50px;">
+        <div class="row col-9">
+            
+            {% if pagetitle %}
+                <h2>{{ pagetitle }}</h2>
+                <hr>
+                
+            {% endif %}
+                
+            {% for card in cards %}
+            <div class="col-4 my-3">
+                <div class="card" style="height: 32rem;">
+                    <img src="{{ card.image.url }}" class="card-img-top"
+                        style="max-height: 15rem; min-height: 15rem; object-fit: contain;" alt="...">
+                    <hr>
+                    <div class="card-body">
+                        <a href="/detay/{{ card.id }}/">
+                            <h5 class="card-title">{{ card.title }}</h5>
+                        </a>
+                        <p class="card-text">{{ card.text|truncatechars:50 }} </p>
+                        <span href="#" class="text-primary fs-3">{{ card.priece }} tl</span><br>
+                        <span href="#" class="text-muted">{{ card.date_now }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if cards.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ cards.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true"><</span>
+                        </a>
+                    </li>
+                    
+                    {% if cards.number >= 4 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.number|add:'-2' }}">{{ cards.number|add:'-2' }}</a></li>
+                        
+                    {% endif %}
+                        
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.number|add:'-1' }}">{{ cards.number|add:'-1' }}</a></li>
+                    {% endif %}
+
+                    <li class="page-item active"><a class="page-link" href="?page={{ cards.number }}">{{ cards.number }}</a></li>
+
+                    {% if cards.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.number|add:'1' }}">{{ cards.number|add:'1' }}</a></li>
+                    
+                    {% if cards.number <= cards.paginator.num_pages|add:'-3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.number|add:'2' }}">{{ cards.number|add:'2' }}</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.number|add:'3' }}">{{ cards.number|add:'3' }}</a></li>
+                    {% endif %}
+                    <!-- <li class="page-item"><a class="page-link" href="">...</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ cards.paginator.num_pages }}">{{ cards.paginator.num_pages }}</a></li> -->
+                        
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ cards.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">></span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ cards.paginator.num_pages }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+           
+        </div>
+        
+
+        <div class="col">
+            <!-- KATEGORİ -->
+            <ul class="list-group">
+                <h4 class="sidenav-title">Kategoriler</h4>
+                <a href="/products/all/" class="list-group-item d-flex justify-content-between align-items-center">
+                    Tüm Hepsi
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </a>
+                {% for c in categorys %}
+                <a href="/products/{{ c.id }}/"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ c.name }}
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </a>
+                {% endfor %}
+            </ul>
+            <br>
+            <hr><br>
+            <!-- RASTGELE ÜRÜN -->
+            <div class="list-group">
+                <h4 class="sidenav-title">İlginizi Çekicek Ürünler</h4>
+
+                {% for random in cards_r %}
+                <a href="/detay/{{ random.id }}/" class="list-group-item list-group-item-action"
+                    aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ random.title }}</h5>
+                        <small>{{ random.date_now }}</small>
+                    </div>
+                    <!-- <small>And some small print.</small> -->
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+    
+{% endblock body %}
+    
+

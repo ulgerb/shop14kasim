@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top: 50px; height: auto;">
+        <div class="col-6 detail-img">
+            <img class="w-100 h-100" src="{{ card.image.url }}" alt="" style="object-fit: contain;">
+        </div>
+        <div class="col-6 detail-info">
+            <a href="#">
+                <h6 class="p-0">{{ card.user.get_full_name }}</h6>
+            </a>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="">{{ card.title }}</h2>
+                <span href="#" class="text-muted">{{ card.date_now }}</span>
+            </div>
+            <hr>
+            <h4 class="">Ürün Özellikleri</h4>
+            <p class="">{{ card.text }}</p>
+            <hr>
+            <span href="#" class="text-primary fs-3">{{ card.priece }} tl</span><br>
+            
+        </div>
+    </div>
+    <br><br><br>
+    <!-- COMMENT -->
+    <div class="row">
+        <h2>Yorum Yap</h2><hr>
+        <div class="col-8">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Ad Soyad</label>
+                    <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="Ad Soyad">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Yorum</label>
+                    <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Yorum Yap">
+            </form>
+        </div>
+        
+        <h2>Yorumlar</h2>
+        <hr>
+        {% for comm in comments %}
+        <div class="col-8 border p-4 comment">
+            <div class="d-flex align-items-center">
+                <div class="user">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        viewBox="0 0 12 12" enable-background="new 0 0 12 12" id="Слой_1" version="1.1" xml:space="preserve">
+                        <g>
+                            <path
+                                d="M9.3005371,6.5351563C8.4776001,7.4294434,7.3084106,8,6,8S3.5223999,7.4294434,2.6994629,6.5351563   C1.3145142,7.2350464,0.5,8.6131592,0.5,10.5V12h11v-1.5C11.5,8.6131592,10.6854858,7.2350464,9.3005371,6.5351563z"
+                                fill="#1D1D1B" />
+                            <circle cx="6" cy="3.5" fill="#1D1D1B" r="3.5" />
+                        </g>
+                    </svg>
+                </div>
+                <h4 class="ps-4">{{ comm.name }}</h4>
+            </div>
+            <hr>
+            <p>{{ comm.text }}</p>
+        </div>
+        <hr>
+        {% endfor %}
+        
+
+    </div>
+    
+</div>
+    
+{% endblock body %}
+        
+    
+
