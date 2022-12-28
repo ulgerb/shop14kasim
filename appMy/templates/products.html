@@ -15,8 +15,12 @@
             {% for card in cards %}
             <div class="col-4 my-3">
                 <div class="card" style="height: 32rem;">
-                    <img src="{{ card.image.url }}" class="card-img-top"
+                    
+                    {% if card.image1 %}
+                    <img src="{{ card.image1.url }}" class="card-img-top"
                         style="max-height: 15rem; min-height: 15rem; object-fit: contain;" alt="...">
+                    {% endif %}
+                        
                     <hr>
                     <div class="card-body">
                         <a href="/detay/{{ card.id }}/">

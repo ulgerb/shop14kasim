@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import User
@@ -109,30 +109,83 @@ def Detail(request,id):
 # ==========================
 
 def myProducts(request):
-    products = Card.objects.filter(user=request.user.id)
-    
+    products = Card.objects.filter(user=request.user.id).order_by("-id")
+    userinfo = ''
+    if request.user.is_authenticated:
+        userinfo = Userinfo.objects.get(user=request.user.id)
+        
     context = {
-        'products': products
+        'products': products,
+        'userinfo': userinfo,
     }
     return render(request,'product/myproducts.html',context)
 
 def createProduct(request):
-    
+    categorylist = Category.objects.all()
+    userinfo = ''
+    if request.user.is_authenticated:
+        userinfo = Userinfo.objects.get(user=request.user.id)
+        
     if request.method == "POST":
         print(request.POST)
         title = request.POST['title']
         text = request.POST['text']
-        category = request.POST['category']
+        categoryid = request.POST['category']
+        category = get_object_or_404(Category, id=categoryid)
         priece = request.POST['priece']
         image = request.FILES['image']
 
-        card = Card(title=title, text=text, priece=priece, image=image, user=request.user)
+        card = Card(title=title, text=text, priece=priece, image=image, user=request.user, category=category)
         card.save()
+        return redirect('myProducts')
         
-    return render(request,'product/create.html')
+    context = {
+        "categorylist": categorylist,
+        "userinfo": userinfo,
+    }
+        
+    return render(request,'product/create.html',context)
 
 
+def updateProduct(request,id):
+    categorylist = Category.objects.all()
+    userinfo = ''
+    if request.user.is_authenticated:
+        userinfo = Userinfo.objects.get(user=request.user.id)
 
+    product = get_object_or_404(Card, id=id)
+    
+    if request.method == "POST":
+        title = request.POST['title']
+        text = request.POST['text']
+        categoryid = request.POST['category']
+        category = get_object_or_404(Category, id=categoryid)
+        priece = request.POST['priece']
+        try:
+            image = request.FILES['image']
+        except:
+            image = product.image
+
+        card = Card.objects.filter(id=id).update(title=title, text=text, priece=priece,
+                                     image=image, user=request.user, category=category)
+       
+        
+        return redirect('myProducts')
+
+    context = {
+        "categorylist": categorylist,
+        "userinfo": userinfo,
+        "product": product,
+    }
+
+    return render(request, 'product/update.html', context)
+
+
+def deleteProduct(request,id):
+    # card = Card.objects.get(id=id)
+    card = get_object_or_404(Card ,id=id)
+    card.delete()
+    return redirect('myProducts')
 
 
 

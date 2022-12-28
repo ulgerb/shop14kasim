@@ -11,9 +11,11 @@
             {% csrf_token %}
             <select class="form-select mb-3" name="category" aria-label="Default select example">
                 <option selected>Kategori Seç</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                
+                {% for category in categorylist %}
+                <option value="{{ category.id }}">{{ category }}</option>
+                {% endfor %}
+                    
             </select>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Ürün Adı</label>

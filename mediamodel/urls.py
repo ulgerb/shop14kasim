@@ -27,9 +27,12 @@ urlpatterns = [
     path('', index,name='index'),
     path('products/<id>/', Product, name='product'),
     path('detay/<id>/',Detail, name='detail'),
+    
     # My Products
-    path('myproducts/', myProducts, name='myProducts'),
-    path('createproduct/', createProduct, name='createProduct'),
+    path('myproducts/', myProducts, name='myProducts'), # ürünlerim
+    path('createproduct/', createProduct, name='createProduct'), # ürün oluştur
+    path('updateproduct/<id>/', updateProduct, name='updateProduct'), # ürün oluştur
+    path('deleteproduct/<id>/', deleteProduct, name='deleteProduct'), # ürün sil
     
     # Users
     path('login/', loginUser, name='loginUser'), # giriş yap
