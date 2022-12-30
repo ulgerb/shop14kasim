@@ -40,7 +40,7 @@
                             <span href="#" class="text-primary fs-3">{{ product.priece }} tl</span><br>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <a href="{% url 'detail' product.id %}" type="button" class="btn btn-sm btn-outline-secondary">Görüntüle</a>
                                     <a href="{% url 'updateProduct' product.id %}" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
                                 </div>
                                 <a href="" class="text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}" style="text-decoration: none;">Kaldır</a>

@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q # and('&') or('|') komutları için kullanılır 
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.models import LogEntry
+
 
 
 # Create your views here.
@@ -104,6 +106,13 @@ def Detail(request,id):
     }
     return render(request,'detail.html',context)
 
+def allUser(request):
+    alluser = User.objects.all()
+    context={
+        "alluser":alluser,
+    }
+    return render(request,"alluser.html",context)
+
 # ==========================
 # MYPRODUCT
 # ==========================
@@ -133,10 +142,26 @@ def createProduct(request):
         categoryid = request.POST['category']
         category = get_object_or_404(Category, id=categoryid)
         priece = request.POST['priece']
-        image = request.FILES['image']
+        image1 = request.FILES['image1']
+        try:
+            image2 = request.FILES['image2']
+        except:
+            image2= None
+        try:
+            image3 = request.FILES['image3']
+        except:
+            image3 = None
 
-        card = Card(title=title, text=text, priece=priece, image=image, user=request.user, category=category)
+        card = Card(title=title, text=text, priece=priece, image1=image1, image2=image2, image3=image3, user=request.user, category=category)
         card.save()
+        # LogEntry.objects.log_action(
+        #     user_id= request.user,
+        #     content_type_id=...,
+        #     object_id=...,
+        #     object_repr=....,
+        #     change_message=...,
+        #     action_flag=...
+        # )
         return redirect('myProducts')
         
     context = {
@@ -162,14 +187,25 @@ def updateProduct(request,id):
         category = get_object_or_404(Category, id=categoryid)
         priece = request.POST['priece']
         try:
-            image = request.FILES['image']
+            image1 = request.FILES['image1']
         except:
-            image = product.image
+            image1 = product.image1
+        try:
+            image2 = request.FILES['image2']
+        except:
+            image2 = product.image2
+        try:
+            image3 = request.FILES['image3']
+        except:
+            image3 = product.image3
 
-        card = Card.objects.filter(id=id).update(title=title, text=text, priece=priece,
-                                     image=image, user=request.user, category=category)
-       
-        
+        Card.objects.filter(id=id).update(title=title, text=text, priece=priece,
+                                      user=request.user, category=category)
+        card = Card.objects.get(id=id)
+        card.image1 = image1
+        card.image2 = image2
+        card.image3 = image3
+        card.save()
         return redirect('myProducts')
 
     context = {
@@ -218,6 +254,10 @@ def registerUser(request):
                 # KAYDOL start
                 user = User.objects.create_user(first_name=name, last_name=surname, email=email, username=username, password=password1)
                 user.save()
+                
+                userinfo = Userinfo(user=user)
+                userinfo.save()
+                
                 # KAYDOL end
                 messeges2 = "Kaydınız başarıyla tamamlanmıştır"
                 return redirect('loginUser')
@@ -227,10 +267,10 @@ def registerUser(request):
 # ip 111 kullanıcının deneme hakkı = 5
 # GİRİŞ YAP
 def loginUser(request):
-    
+    context = {'pagetitle': 'Giriş Yap'}
     global messeges2
     if messeges2 is not None:
-        return render(request, 'users/login.html', {"messeges2": messeges2})
+        context.update({"messeges2": messeges2})
     
     if request.method == "POST":
         # ip111 -= 1
@@ -245,8 +285,8 @@ def loginUser(request):
         else:
             messeges = "Kullanıcı adı veya şifre hatalı!"
             return render(request, 'users/login.html',{"messeges":messeges})
-        
-    return render(request, 'users/login.html', {'pagetitle':'Giriş Yap'})
+    
+    return render(request, 'users/login.html', context)
 
 # ÇIKIŞ YAP
 def logoutUser(request):

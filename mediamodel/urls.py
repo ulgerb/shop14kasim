@@ -27,6 +27,7 @@ urlpatterns = [
     path('', index,name='index'),
     path('products/<id>/', Product, name='product'),
     path('detay/<id>/',Detail, name='detail'),
+    path('alluser/', allUser, name="allUser"),
     
     # My Products
     path('myproducts/', myProducts, name='myProducts'), # ürünlerim
